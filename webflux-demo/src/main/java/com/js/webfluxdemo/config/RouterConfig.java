@@ -1,5 +1,6 @@
 package com.js.webfluxdemo.config;
 
+import com.js.webfluxdemo.exception.DummyException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,8 @@ public class RouterConfig {
                               .GET("router/table/{number}", requestHandler::tableHandler)
                               .GET("router/table/{number}/stream", requestHandler::tableHandlerStream)
                               .POST("router/multiply", requestHandler::multiplyHandler)
+                              .GET("router/square/{number}/error", requestHandler::squareErrorHandler)
+                              .onError(DummyException.class, (e, serverRequest) -> ServerResponse.badRequest().bodyValue(e.getMessage()))
                               .build();
     }
 }
