@@ -3,6 +3,7 @@ package com.js.webfluxdemo.config;
 import com.js.webfluxdemo.dto.Response;
 import com.js.webfluxdemo.service.ReactiveMathService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -24,5 +25,13 @@ public class RequestHandler {
         int input = Integer.parseInt(serverRequest.pathVariable("number"));
         Flux<Response> table = mathService.getMultiplicationTable(input);
         return ServerResponse.ok().body(table, Response.class);
+    }
+
+    public Mono<ServerResponse> tableHandlerStream(ServerRequest serverRequest) {
+        int input = Integer.parseInt(serverRequest.pathVariable("number"));
+        Flux<Response> table = mathService.getMultiplicationTable(input);
+        return ServerResponse.ok()
+                             .contentType(MediaType.TEXT_EVENT_STREAM)
+                             .body(table, Response.class);
     }
 }

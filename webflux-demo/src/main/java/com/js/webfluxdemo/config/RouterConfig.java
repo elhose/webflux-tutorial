@@ -17,6 +17,7 @@ public class RouterConfig {
         return RouterFunctions.route()
                               .GET("router/square/{number}", requestHandler::squareHandler)
                               .GET("router/table/{number}", requestHandler::tableHandler)
+                              .GET("router/table/{number}/stream", requestHandler::tableHandlerStream)
                               .build();
     }
 }
