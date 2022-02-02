@@ -14,13 +14,19 @@ public class RouterConfig {
     private final RequestHandler requestHandler;
 
     @Bean
-    public RouterFunction<ServerResponse> serverResponseRouterFunction() {
+    public RouterFunction<ServerResponse> highLevelRouter() {
         return RouterFunctions.route()
-                              .GET("router/square/{number}", requestHandler::squareHandler)
-                              .GET("router/table/{number}", requestHandler::tableHandler)
-                              .GET("router/table/{number}/stream", requestHandler::tableHandlerStream)
-                              .POST("router/multiply", requestHandler::multiplyHandler)
-                              .GET("router/square/{number}/error", requestHandler::squareErrorHandler)
+                              .path("router", this::serverResponseRouterFunction)
+                              .build();
+    }
+
+    private RouterFunction<ServerResponse> serverResponseRouterFunction() {
+        return RouterFunctions.route()
+                              .GET("square/{number}", requestHandler::squareHandler)
+                              .GET("table/{number}", requestHandler::tableHandler)
+                              .GET("table/{number}/stream", requestHandler::tableHandlerStream)
+                              .POST("multiply", requestHandler::multiplyHandler)
+                              .GET("square/{number}/error", requestHandler::squareErrorHandler)
                               .onError(DummyException.class, (e, serverRequest) -> ServerResponse.badRequest().bodyValue(e.getMessage()))
                               .build();
     }
