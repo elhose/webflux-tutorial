@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.InputMismatchException;
+
 @RestController
 @RequestMapping("reactive-math")
 @RequiredArgsConstructor
@@ -38,6 +40,21 @@ public class ReactiveMathController {
     @PostMapping(value = "multiply")
     public Mono<Response> multiply(@RequestBody Mono<MultiplyRequest> requestMono) {
         return mathService.multiply(requestMono);
+    }
+
+    @GetMapping("square/{number}/error")
+    public Mono<Response> getSquareErrorThrowing(@PathVariable int number) {
+        return Mono.just(number)
+                   .handle((integer, sink) -> {
+                       if (integer > 0) {
+                           sink.next(integer);
+                       } else {
+                           sink.error(new InputMismatchException(
+                                   "Only positive numbers are allowed here. Passed number: " + integer));
+                       }
+                   })
+                   .cast(Integer.class)
+                   .flatMap(mathService::getSquare);
     }
 
 }
