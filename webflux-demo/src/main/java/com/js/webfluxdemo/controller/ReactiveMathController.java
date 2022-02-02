@@ -1,11 +1,14 @@
 package com.js.webfluxdemo.controller;
 
+import com.js.webfluxdemo.dto.MultiplyRequest;
 import com.js.webfluxdemo.dto.Response;
 import com.js.webfluxdemo.service.ReactiveMathService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
@@ -30,6 +33,11 @@ public class ReactiveMathController {
     @GetMapping(value = "table/{number}/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Response> getMultiplicationTableStream(@PathVariable int number) {
         return mathService.getMultiplicationTable(number);
+    }
+
+    @PostMapping(value = "multiply")
+    public Mono<Response> multiply(@RequestBody Mono<MultiplyRequest> requestMono) {
+        return mathService.multiply(requestMono);
     }
 
 }

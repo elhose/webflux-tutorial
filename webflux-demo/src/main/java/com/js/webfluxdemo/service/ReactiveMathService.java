@@ -1,5 +1,6 @@
 package com.js.webfluxdemo.service;
 
+import com.js.webfluxdemo.dto.MultiplyRequest;
 import com.js.webfluxdemo.dto.Response;
 import com.js.webfluxdemo.util.SleepUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -26,5 +27,10 @@ public class ReactiveMathService {
     private void simulateLongProcess(int currentNumber) {
         log.info("REACTIVE MathService currently working on -> " + currentNumber);
         SleepUtil.sleepSeconds(1);
+    }
+
+    public Mono<Response> multiply(Mono<MultiplyRequest> requestMono) {
+        return requestMono.map(dto -> dto.first() * dto.second())
+                          .map(Response::new);
     }
 }
