@@ -42,4 +42,9 @@ public class ProductService {
     public Mono<Void> deleteProduct(String id) {
         return productRepository.deleteById(id);
     }
+
+    public Flux<ProductDto> getAllProductsWithinRange(double min, double max) {
+        return productRepository.findByPriceBetween(min, max)
+                                .map(productMapper::toDto);
+    }
 }
