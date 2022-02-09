@@ -47,4 +47,8 @@ public class ProductService {
         return productRepository.findByPriceBetween(min, max)
                                 .map(productMapper::toDto);
     }
+
+    public Mono<Void> deleteAllProducts() {
+        return productRepository.deleteAll();
+    }
 }
