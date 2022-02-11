@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT PRIMARY KEY NOT NULL ,
+    name TEXT,
+    balance MONEY
+);
+
