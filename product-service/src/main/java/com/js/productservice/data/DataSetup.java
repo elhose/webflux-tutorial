@@ -27,10 +27,10 @@ public class DataSetup implements CommandLineRunner {
     }
 
     private Flux<ProductDto> prepareDummyData() {
-        return Flux.just(new ProductDto("11", "ergonomic mouse", 400.0),
-                         new ProductDto("22", "SSD 512 GB", 300.0),
-                         new ProductDto("33", "Monitor", 1250.0),
-                         new ProductDto("44", "ergonomic chair", 1950.0),
-                         new ProductDto("55", "compressed air", 15.0));
+        return Flux.just(new ProductDto("1", "ergonomic mouse", 400.0),
+                         new ProductDto("2", "SSD 512 GB", 300.0),
+                         new ProductDto("3", "Monitor", 1250.0),
+                         new ProductDto("4", "ergonomic chair", 1950.0),
+                         new ProductDto("5", "compressed air", 15.0));
     }
 }

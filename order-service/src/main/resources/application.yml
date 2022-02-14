@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+
+product:
+  service:
+    url: http://localhost:8091/product/
+
+user:
+  service:
+    url: http://localhost:8092/
+
+server:
+  port: 8090
