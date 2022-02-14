@@ -2,12 +2,10 @@ package com.js.userservice.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
 
 @Data
-@Table("user_transaction")
 public class Transaction {
     @Id
     private Integer id;

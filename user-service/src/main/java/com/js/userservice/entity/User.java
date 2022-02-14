@@ -15,4 +15,9 @@ public class User {
     private Integer id;
     private String name;
     private Double balance;
+
+    public User(String name, Double balance) {
+        this.name = name;
+        this.balance = balance;
+    }
 }

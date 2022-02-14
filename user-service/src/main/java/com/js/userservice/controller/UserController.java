@@ -1,5 +1,6 @@
 package com.js.userservice.controller;
 
+import com.js.userservice.dto.PostUserDTO;
 import com.js.userservice.dto.UserDTO;
 import com.js.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +32,8 @@ public class UserController {
     }
 
     @PostMapping
-    public Mono<UserDTO> saveUser(@RequestBody Mono<UserDTO> userDTOMono) {
-        return userService.insertUser(userDTOMono);
+    public Mono<UserDTO> saveUser(@RequestBody Mono<PostUserDTO> postUserDTOMono) {
+        return userService.insertUser(postUserDTOMono);
     }
 
     @PutMapping("{id}")

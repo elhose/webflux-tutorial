@@ -1,19 +1,21 @@
-DROP TABLE IF EXISTS users, user_transaction;
+DROP TABLE IF EXISTS users, transaction;
 
 CREATE TABLE IF NOT EXISTS users
 (
-    id      INT PRIMARY KEY NOT NULL,
+    id      SERIAL PRIMARY KEY,
     name    TEXT,
-    balance MONEY
+    balance DOUBLE PRECISION
 );
 
-CREATE TABLE IF NOT EXISTS user_transaction
+CREATE TABLE IF NOT EXISTS transaction
 (
-    id               INT PRIMARY KEY NOT NULL,
-    user_id          INT             NOT NULL,
-    price            MONEY,
+    id               SERIAL PRIMARY KEY,
+    user_id          INT,
+    price            DOUBLE PRECISION,
     transaction_date TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id)
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-
+INSERT INTO users(name, balance)
+VALUES ('Mike', 2000),
+       ('John', 888);

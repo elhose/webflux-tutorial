@@ -1,5 +1,6 @@
 package com.js.userservice.service;
 
+import com.js.userservice.dto.PostUserDTO;
 import com.js.userservice.dto.UserDTO;
 import com.js.userservice.mapper.UserMapper;
 import com.js.userservice.repository.UserRepository;
@@ -24,9 +25,9 @@ public class UserService {
                              .map(mapper::userEntityToDTO);
     }
 
-    public Mono<UserDTO> insertUser(Mono<UserDTO> userDTOMono) {
-        return userDTOMono.map(mapper::userDTOToEntity)
-                          .doOnNext(userRepository::save)
+    public Mono<UserDTO> insertUser(Mono<PostUserDTO> userDTOMono) {
+        return userDTOMono.map(mapper::postDTOToEntity)
+                          .flatMap(userRepository::save)
                           .map(mapper::userEntityToDTO);
     }
 
