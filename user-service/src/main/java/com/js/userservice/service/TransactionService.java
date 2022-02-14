@@ -8,6 +8,7 @@ import com.js.userservice.repository.TransactionRepository;
 import com.js.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -26,6 +27,11 @@ public class TransactionService {
                                      requestDTO, TransactionStatus.APPROVED))
                              .defaultIfEmpty(transactionMapper.transactionRequestDtoToResponseDto(requestDTO,
                                                                                                   TransactionStatus.DECLINED));
+    }
+
+    public Flux<TransactionResponseDTO> getAllTransactionsForUser(Integer userId) {
+        return transactionRepository.findAllByUserId(userId)
+                                    .map(transactionMapper::entityToResponseDTO);
     }
 
 }

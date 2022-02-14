@@ -19,4 +19,8 @@ public class TransactionMapper {
                                                                      TransactionStatus status) {
         return new TransactionResponseDTO(transactionRequestDTO.userId(), transactionRequestDTO.price(), status);
     }
+
+    public TransactionResponseDTO entityToResponseDTO(Transaction transaction) {
+        return new TransactionResponseDTO(transaction.getUserId(), transaction.getPrice(), TransactionStatus.APPROVED);
+    }
 }
