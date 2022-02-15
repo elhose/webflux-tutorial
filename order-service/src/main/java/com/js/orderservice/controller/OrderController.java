@@ -30,4 +30,9 @@ public class OrderController {
     public Flux<PurchaseOrderResponseDTO> getPurchasesForUser(@PathVariable("id") Integer id) {
         return queryService.getProductsByUserId(id);
     }
+
+    @GetMapping("all")
+    public Flux<PurchaseOrderResponseDTO> getAllPossibleOrdersForProductsAndUsers() {
+        return orderService.processOrdersForAllAvailableUsersAndProducts();
+    }
 }
