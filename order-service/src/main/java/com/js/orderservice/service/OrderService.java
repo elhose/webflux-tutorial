@@ -19,6 +19,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+// If it's needed, services could be made more resilient, by adding onError handlers, adding timeouts for network
+// calls is also helpful
+// Since it's reactive programming, it's best practice to prepare exceptions for communicating, what happen wrong
+// (logs are useless in reactive coding)
+
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -65,6 +70,11 @@ public class OrderService {
 
     private Mono<ContextHelper> getProductRequestResponse(ContextHelper contextHelper) {
         return productClient.getProductById(contextHelper.getPurchaseOrderRequestDTO().productId())
+                            .doOnError(throwable -> {
+                                throw new RuntimeException(
+                                        "Exception while retrieving Product with ID: " + contextHelper.purchaseOrderRequestDTO.productId(),
+                                        throwable);
+                            })
                             .doOnNext(contextHelper::setProductDto)
                             .thenReturn(contextHelper);
     }
@@ -72,6 +82,11 @@ public class OrderService {
     private Mono<ContextHelper> createTransaction(ContextHelper contextHelper) {
         return userClient.createTransaction(new TransactionRequestDto(contextHelper.purchaseOrderRequestDTO.userId(),
                                                                       contextHelper.productDto.price()))
+                         .doOnError(throwable -> {
+                             throw new RuntimeException(
+                                     "Exception while creating Transaction! User service threw an Exception!",
+                                     throwable);
+                         })
                          .doOnNext(contextHelper::setTransactionResponseDto)
                          .thenReturn(contextHelper);
     }
