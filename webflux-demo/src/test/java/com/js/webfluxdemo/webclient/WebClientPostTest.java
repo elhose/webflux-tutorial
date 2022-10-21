@@ -1,7 +1,7 @@
-package com.js.webfluxdemo;
+package com.js.webfluxdemo.webclient;
 
+import com.js.webfluxdemo.dto.MultiplyRequest;
 import com.js.webfluxdemo.dto.Response;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,34 +12,42 @@ import reactor.test.StepVerifier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-class WebClientGetMonoTest {
-
-    private static final int EXAMPLE_NUMBER = 6;
+class WebClientPostTest {
 
     @Autowired
     private WebClient webClient;
 
     @Test
     void blockingTest() {
-        Response blockingResponse = webClient.get()
-                                  .uri("reactive-math/square/{number}", EXAMPLE_NUMBER)
+        MultiplyRequest multiplyRequest = new MultiplyRequest(3, 5);
+        Response blockingResponse = webClient.post()
+                                  .uri("reactive-math/multiply")
+                                  .bodyValue(multiplyRequest)
                                   .retrieve()
                                   .bodyToMono(Response.class)
                                   .block();
 
-        assertEquals(Math.pow(EXAMPLE_NUMBER, 2), blockingResponse.getOutput());
+        assertEquals(multiplyRequest.first() * multiplyRequest.second(), blockingResponse.getOutput());
     }
 
     @Test
     void nonBlockingTest() {
-        Mono<Response> responseMono = webClient.get()
-                                               .uri("reactive-math/square/{number}", EXAMPLE_NUMBER)
+        MultiplyRequest multiplyRequest = new MultiplyRequest(3, 5);
+        Mono<Response> responseMono = webClient.post()
+                                               .uri("reactive-math/multiply")
+                                               .bodyValue(multiplyRequest)
                                                .retrieve()
                                                .bodyToMono(Response.class);
 
         StepVerifier.create(responseMono)
-                    .expectNextMatches(response -> response.getOutput() == Math.pow(EXAMPLE_NUMBER, 2))
+                    .expectNextMatches(
+                            response -> response.getOutput() == multiplyRequest.first() * multiplyRequest.second())
                     .verifyComplete();
     }
+
+
+
+
+
 
 }
